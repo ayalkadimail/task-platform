@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:taskdb
+    #dbc:h2:file:~/data/taskdb pour Vraie persistance
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true # Pour voir ta base sur http://localhost:8080/h2-console
+  jpa:
+    show-sql: true # Pour voir les requêtes SQL dans la console
+    hibernate:
+      ddl-auto: update #Met à jour les tables existantes

@@ -1,0 +1,19 @@
+### Create a Task
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Finir le setup MVP",
+  "category": "ADMIN"
+}
+
+###
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+"title": "Eat",
+"category": "USER"
+}
+### Get all Tasks
+GET http://localhost:8080/api/tasks

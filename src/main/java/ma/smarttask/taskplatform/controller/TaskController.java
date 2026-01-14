@@ -1,9 +1,7 @@
 package ma.smarttask.taskplatform.controller;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import ma.smarttask.taskplatform.model.AbstractTask;
-import ma.smarttask.taskplatform.model.GeneralTask;
 import ma.smarttask.taskplatform.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +22,7 @@ public class TaskController {
     =>Spring sérialise la liste en JSON*/
 
     @PostMapping
-    public AbstractTask create(@RequestBody GeneralTask task) { //Désérialise le JSON entrant, Crée automatiquement un objet GeneralTask
+    public AbstractTask create(@RequestBody AbstractTask task) { //Désérialise le JSON entrant, Crée automatiquement un objet GeneralTask
         return taskService.save(task);
     }
 }

@@ -1,10 +1,8 @@
 package ma.smarttask.taskplatform.service;
 
 import jakarta.transaction.Transactional;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import ma.smarttask.taskplatform.model.AbstractTask;
-import ma.smarttask.taskplatform.model.GeneralTask;
 import ma.smarttask.taskplatform.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,7 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findAll();
     }
     @Override
-    public AbstractTask save(GeneralTask task) {
+    public AbstractTask save(AbstractTask task) {
         return taskRepository.save(task);
     }
 }

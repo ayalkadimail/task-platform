@@ -3,8 +3,12 @@ POST http://localhost:8080/api/tasks
 Content-Type: application/json
 
 {
+  "type": "GENERAL",
   "title": "Finir le setup MVP",
-  "category": "ADMIN"
+  "description": "ajout de classe abstraite et general task",
+  "priority": "HIGH",
+  "dueDate": "2026-01-20",
+  "category": "PERSONAL"
 }
 
 ###
@@ -12,8 +16,14 @@ POST http://localhost:8080/api/tasks
 Content-Type: application/json
 
 {
-"title": "Eat",
-"category": "USER"
+  "type": "STUDY",
+  "title": "Etape ++MVP",
+  "description": "ajout de classe study task",
+  "priority": "HIGH",
+  "dueDate": "2026-01-15",
+  "topic": "SPRING",
+  "difficulty": "EASY"
+
 }
 ### Get all Tasks
 GET http://localhost:8080/api/tasks

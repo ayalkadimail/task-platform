@@ -3,6 +3,7 @@ package ma.smarttask.taskplatform.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import ma.smarttask.taskplatform.dto.TaskRequest;
+import ma.smarttask.taskplatform.exception.ResourceNotFoundException;
 import ma.smarttask.taskplatform.model.AbstractTask;
 import ma.smarttask.taskplatform.model.GeneralTask;
 import ma.smarttask.taskplatform.model.StudyTask;
@@ -46,5 +47,11 @@ public class TaskServiceImpl implements TaskService {
 
         // 4. L'ENREGISTREMENT
         return taskRepository.save(task);
+    }
+
+    @Override
+    public AbstractTask findById(Long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Tache avec l'ID " + id + " introuvable"));
     }
 }

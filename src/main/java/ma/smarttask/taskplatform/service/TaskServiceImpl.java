@@ -111,13 +111,35 @@ public class TaskServiceImpl implements TaskService {
     public Page<AbstractTask> findAll(Pageable pageable) {
         return taskRepository.findAll(pageable);
     }
+    @Override
     public Page<AbstractTask> findIncompleteTasks(Pageable pageable){
         // 1. On recupere TOUTES les taches paginees depuis la DB
         Page<AbstractTask> page= taskRepository.findAll(pageable);
         // 2. On filtre le contenu de cette page avec les Streams
-        List<AbstractTask> filterd=page.getContent().stream().filter(task -> !task.isCompleted()).toList();
+        List<AbstractTask> filterd=page.getContent().stream()
+                .filter(task -> !task.isCompleted())
+                .toList();
         // 3. On reconstruit la Page
         return new PageImpl<>(filterd,pageable,page.getTotalElements());
+    }
+    @Override
+    public Page<AbstractTask> findUrgentTasks(Pageable pageable) {
+        Page<AbstractTask> page = taskRepository.findAll(pageable);
+        List<AbstractTask> filtered = page.getContent().stream()
+                .filter(task -> task.getDueDate() != null)
+                .filter(task -> task.getDueDate().isBefore(LocalDate.now().plusDays(3)))
+                .toList();
+        return new PageImpl<>(filtered, pageable, page.getTotalElements());
+    }
+    @Override
+    public Page<StudyTask> findStudyTasksByTopic(Topic topic, Pageable pageable) {
+        Page<AbstractTask> page = taskRepository.findAll(pageable);
+        List<StudyTask> filtered = page.getContent().stream()
+                .filter(StudyTask.class::isInstance)
+                .map(StudyTask.class::cast)
+                .filter(task -> task.getTopic() == topic)
+                .toList();
+        return new PageImpl<>(filtered, pageable, page.getTotalElements());
     }
 
 }

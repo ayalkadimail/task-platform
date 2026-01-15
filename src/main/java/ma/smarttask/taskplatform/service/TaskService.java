@@ -23,5 +23,7 @@ public interface TaskService {
     Page<AbstractTask> findAll(Pageable pageable);
 
     Page<AbstractTask> findIncompleteTasks(Pageable pageable);
+    Page<AbstractTask> findUrgentTasks(Pageable pageable);
+    Page<StudyTask> findStudyTasksByTopic(Topic topic, Pageable pageable);
 
 }

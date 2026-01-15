@@ -42,7 +42,7 @@ public class TaskController {
         return taskService.findById(id);
     }
 
-
+/*
     @GetMapping("/incomplete")
     public List<AbstractTask> getIncomplete() {
         return taskService.findIncompleteTasks();
@@ -57,7 +57,7 @@ public class TaskController {
     public List<StudyTask> getByTopic(@PathVariable Topic topic) {
         return taskService.findStudyTasksByTopic(topic);
     }
-
+*/
     @GetMapping("/study/random")
     public Optional<StudyTask> getRandom() {
         return taskService.findRandomStudyTask();
@@ -77,6 +77,27 @@ public class TaskController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort[0]));
 
         return taskService.findAll(pageable);
+    }
+    @GetMapping("/incomplete")
+    public Page<AbstractTask> getIncomplete(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return taskService.findIncompleteTasks(PageRequest.of(page, size));
+    }
+
+    @GetMapping("/urgent")
+    public Page<AbstractTask> getUrgent(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return taskService.findUrgentTasks(PageRequest.of(page, size));
+    }
+
+    @GetMapping("/study/topic/{topic}")
+    public Page<StudyTask> getByTopic(
+            @PathVariable Topic topic,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return taskService.findStudyTasksByTopic(topic, PageRequest.of(page, size));
     }
 
 }

@@ -29,5 +29,7 @@ public interface TaskService {
     AbstractTask toggleStatus(Long id);
     AbstractTask update(Long id, TaskRequest request);
 
+    void delete(Long id);
+
 
 }

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -108,6 +109,12 @@ public class TaskController {
     @PutMapping("/{id}")
     public AbstractTask update(@PathVariable Long id, @Valid @RequestBody TaskRequest request) {
         return taskService.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT) // Renvoie 204
+    public void delete(@PathVariable Long id){
+        taskService.delete(id);
     }
 
 }

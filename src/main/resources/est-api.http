@@ -76,7 +76,7 @@ GET http://localhost:8080/api/tasks/study/topic/JAVA?page=0&size=2
 ###
 GET http://localhost:8080/api/tasks/study/random
 ###
-GET http://localhost:8080/api/tasks/1
+GET http://localhost:8080/api/tasks/3
 
 ###Pagination simple
 GET http://localhost:8080/api/tasks?page=0&size=5
@@ -103,3 +103,7 @@ Content-Type: application/json
 { "type": "STUDY", "title": "voir spring mvc", "priority": "HIGH", "dueDate": "2026-01-31", "topic": "JAVA", "difficulty": "HARD",
   "completed": true
 }
+
+
+###
+DELETE http://localhost:8080/api/tasks/3

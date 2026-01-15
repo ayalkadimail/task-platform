@@ -191,5 +191,15 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.save(existingTask);
     }
 
+    @Override
+    public void delete(Long id) {
+        // 1. Verifier si la tache existe
+        if (!taskRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Impossible de supprimer : Tache " + id + " introuvable");
+        }
+        // 2. Supprimer
+        taskRepository.deleteById(id);
+    }
+
 
 }

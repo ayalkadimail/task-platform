@@ -17,13 +17,63 @@ Content-Type: application/json
 
 {
   "type": "STUDY",
-  "title": "Etape ++MVP",
-  "description": "ajout de classe study task",
+  "title": "Etape streams",
+  "description": "apprendre et reviser",
   "priority": "HIGH",
   "dueDate": "2026-01-15",
   "topic": "SPRING",
   "difficulty": "EASY"
 
 }
+###
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "type": "GENERAL",
+  "title": "",
+  "dueDate": "2020-01-01",
+  "priority": "HIGH"
+}
+
+###
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{ "type": "STUDY", "title": "Réviser Streams", "priority": "HIGH", "dueDate": "2026-01-16", "topic": "JAVA", "difficulty": "HARD" }
+
+###
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{ "type": "GENERAL", "title": "Aller à la salle", "priority": "LOW", "dueDate": "2026-01-20", "category": "SPORT", "completed": true }
+
+###
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{ "type": "STUDY", "title": "Index SQL", "priority": "MEDIUM", "dueDate": "2026-02-15", "topic": "ANGULAR", "difficulty": "MEDIUM" }
+
+###
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{ "type": "GENERAL", "title": "Rendre livre BU", "priority": "HIGH", "dueDate": "2026-01-16", "category": "DIVERTISSMENT" }
+
 ### Get all Tasks
 GET http://localhost:8080/api/tasks
+
+
+###
+GET http://localhost:8080/api/tasks/incomplete
+
+###
+GET http://localhost:8080/api/tasks/urgent
+
+###
+GET http://localhost:8080/api/tasks/study/topic/JAVA
+
+###
+GET http://localhost:8080/api/tasks/study/random
+###
+GET http://localhost:8080/api/tasks/1

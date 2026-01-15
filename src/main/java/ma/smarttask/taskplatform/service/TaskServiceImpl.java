@@ -8,10 +8,15 @@ import ma.smarttask.taskplatform.model.AbstractTask;
 import ma.smarttask.taskplatform.model.GeneralTask;
 import ma.smarttask.taskplatform.model.StudyTask;
 
+import ma.smarttask.taskplatform.model.enums.Topic;
 import ma.smarttask.taskplatform.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -21,6 +26,7 @@ public class TaskServiceImpl implements TaskService {
     public List<AbstractTask> findAll() {
         return taskRepository.findAll();
     }
+
     @Override
     public AbstractTask save(TaskRequest request) {
         AbstractTask task; // 1. On prepare une variable vide de type "Tache"
@@ -53,5 +59,44 @@ public class TaskServiceImpl implements TaskService {
     public AbstractTask findById(Long id) {
         return taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tache avec l'ID " + id + " introuvable"));
+    }
+
+    @Override
+    public List<AbstractTask> findIncompleteTasks() {
+        return taskRepository.findAll().stream()
+                .filter(task -> !task.isCompleted()) // On ne garde que les non terminees
+                .toList();
+    }
+    //********************************************************************************************************
+    //streams*************************************************************************************************
+
+    @Override
+    public List<AbstractTask> findUrgentTasks() {
+        return taskRepository.findAll().stream()
+                .filter(task -> task.getDueDate() != null)
+                .filter(task -> task.getDueDate().isBefore(LocalDate.now().plusDays(3)))
+                .toList();
+    }
+
+    @Override
+    public List<StudyTask> findStudyTasksByTopic(Topic topic) {
+        return taskRepository.findAll().stream()
+                .filter(StudyTask.class::isInstance) // Senior tip: plus propre que instanceof
+                .map(StudyTask.class::cast)
+                .filter(task -> task.getTopic() == topic)
+                .toList();
+    }
+
+    @Override
+    public Optional<StudyTask> findRandomStudyTask() {
+        List<StudyTask> studyTasks = taskRepository.findAll().stream()
+                .filter(StudyTask.class::isInstance)
+                .map(StudyTask.class::cast)
+                .toList();
+
+        if (studyTasks.isEmpty()) return Optional.empty();
+
+        int randomIndex = new Random().nextInt(studyTasks.size());
+        return Optional.of(studyTasks.get(randomIndex));
     }
 }

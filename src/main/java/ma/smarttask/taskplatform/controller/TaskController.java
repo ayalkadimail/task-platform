@@ -4,11 +4,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ma.smarttask.taskplatform.dto.TaskRequest;
 import ma.smarttask.taskplatform.model.AbstractTask;
+import ma.smarttask.taskplatform.model.StudyTask;
+import ma.smarttask.taskplatform.model.enums.Topic;
 import ma.smarttask.taskplatform.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -27,5 +30,31 @@ public class TaskController {
     public AbstractTask create(@Valid @RequestBody TaskRequest request) {     // Le controller passe juste le "paquet" au service
 
         return taskService.save(request);
+    }
+    @GetMapping("/{id}")
+    public AbstractTask getById(@PathVariable Long id) {
+        // Ici, on appelle le service qui, lui, va jeter l'exception si l'ID n'existe pas
+        return taskService.findById(id);
+    }
+
+
+    @GetMapping("/incomplete")
+    public List<AbstractTask> getIncomplete() {
+        return taskService.findIncompleteTasks();
+    }
+
+    @GetMapping("/urgent")
+    public List<AbstractTask> getUrgent() {
+        return taskService.findUrgentTasks();
+    }
+
+    @GetMapping("/study/topic/{topic}")
+    public List<StudyTask> getByTopic(@PathVariable Topic topic) {
+        return taskService.findStudyTasksByTopic(topic);
+    }
+
+    @GetMapping("/study/random")
+    public Optional<StudyTask> getRandom() {
+        return taskService.findRandomStudyTask();
     }
 }

@@ -147,16 +147,27 @@ public class TaskServiceImpl implements TaskService {
         // La base de donnees filtre ET pagine. C'est direct.
         return taskRepository.findByCompletedFalse(pageable);
     }
-
     @Override
     public Page<AbstractTask> findUrgentTasks(Pageable pageable) {
         // On passe la date limite (J+3) au repository
         return taskRepository.findByDueDateBefore(LocalDate.now().plusDays(3), pageable);
     }
-
     @Override
     public Page<StudyTask> findStudyTasksByTopic(Topic topic, Pageable pageable) {
         return taskRepository.findStudyTasksByTopic(topic, pageable);
+    }
+
+    @Override
+    public AbstractTask completeTask(Long id) {
+        // 1. On recupere la tache (ou on jette une 404 via notre Exception custom)
+        AbstractTask task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Tache " + id + " introuvable"));
+
+        // 2. Mise a jour du statut
+        task.setCompleted(true);
+
+        // 3. Sauvegarde (Hibernate s'occupe de mettre a jour la bonne ligne)
+        return taskRepository.save(task);
     }
 
 }

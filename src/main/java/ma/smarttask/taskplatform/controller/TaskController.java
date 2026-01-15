@@ -100,4 +100,9 @@ public class TaskController {
         return taskService.findStudyTasksByTopic(topic, PageRequest.of(page, size));
     }
 
+    @PutMapping("/{id}/complete")
+    public AbstractTask complete(@PathVariable Long id) {
+        return taskService.completeTask(id);
+    }
+
 }

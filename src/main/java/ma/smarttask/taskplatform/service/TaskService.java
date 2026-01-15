@@ -26,7 +26,8 @@ public interface TaskService {
     Page<AbstractTask> findUrgentTasks(Pageable pageable);
     Page<StudyTask> findStudyTasksByTopic(Topic topic, Pageable pageable);
 
-    AbstractTask completeTask(Long id);
+    AbstractTask toggleStatus(Long id);
+    AbstractTask update(Long id, TaskRequest request);
 
 
 }

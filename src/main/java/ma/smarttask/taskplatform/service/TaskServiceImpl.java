@@ -158,16 +158,38 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public AbstractTask completeTask(Long id) {
-        // 1. On recupere la tache (ou on jette une 404 via notre Exception custom)
+    public AbstractTask toggleStatus(Long id) {
         AbstractTask task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tache " + id + " introuvable"));
 
-        // 2. Mise a jour du statut
-        task.setCompleted(true);
+        task.setCompleted(!task.isCompleted()); // On inverse le statut actuel (true -> false, false -> true)
 
-        // 3. Sauvegarde (Hibernate s'occupe de mettre a jour la bonne ligne)
         return taskRepository.save(task);
     }
+
+    @Override
+    public AbstractTask update(Long id, TaskRequest request) {
+        // 1. Verifier l'existence
+        AbstractTask existingTask = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Tache " + id + " introuvable"));
+
+        // 2. Mise a jour des champs communs
+        existingTask.setTitle(request.title());
+        existingTask.setDescription(request.description());
+        existingTask.setPriority(request.priority());
+        existingTask.setDueDate(request.dueDate());
+
+        // 3. Mise a jour des champs specifiques (selon le type reel de l'objet)
+        if (existingTask instanceof StudyTask studyTask) {
+            studyTask.setTopic(request.topic());
+            studyTask.setDifficulty(request.difficulty());
+        } else if (existingTask instanceof GeneralTask generalTask) {
+            generalTask.setCategory(request.category());
+        }
+
+        // 4. Sauvegarde
+        return taskRepository.save(existingTask);
+    }
+
 
 }

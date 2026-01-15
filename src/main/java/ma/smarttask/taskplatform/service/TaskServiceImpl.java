@@ -111,7 +111,7 @@ public class TaskServiceImpl implements TaskService {
     public Page<AbstractTask> findAll(Pageable pageable) {
         return taskRepository.findAll(pageable);
     }
-    @Override
+   /* @Override
     public Page<AbstractTask> findIncompleteTasks(Pageable pageable){
         // 1. On recupere TOUTES les taches paginees depuis la DB
         Page<AbstractTask> page= taskRepository.findAll(pageable);
@@ -140,6 +140,23 @@ public class TaskServiceImpl implements TaskService {
                 .filter(task -> task.getTopic() == topic)
                 .toList();
         return new PageImpl<>(filtered, pageable, page.getTotalElements());
+    }*/
+
+    @Override
+    public Page<AbstractTask> findIncompleteTasks(Pageable pageable) {
+        // La base de donnees filtre ET pagine. C'est direct.
+        return taskRepository.findByCompletedFalse(pageable);
+    }
+
+    @Override
+    public Page<AbstractTask> findUrgentTasks(Pageable pageable) {
+        // On passe la date limite (J+3) au repository
+        return taskRepository.findByDueDateBefore(LocalDate.now().plusDays(3), pageable);
+    }
+
+    @Override
+    public Page<StudyTask> findStudyTasksByTopic(Topic topic, Pageable pageable) {
+        return taskRepository.findStudyTasksByTopic(topic, pageable);
     }
 
 }

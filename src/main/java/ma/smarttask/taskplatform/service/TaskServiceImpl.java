@@ -11,6 +11,7 @@ import ma.smarttask.taskplatform.model.StudyTask;
 import ma.smarttask.taskplatform.model.enums.Topic;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import ma.smarttask.taskplatform.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,10 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
-    @Override
+/*   @Override
     public List<AbstractTask> findAll() {
         return taskRepository.findAll();
-    }
+    }*/
 
     @Override
     public AbstractTask save(TaskRequest request) {
@@ -53,6 +54,9 @@ public class TaskServiceImpl implements TaskService {
         task.setDescription(request.description());
         task.setPriority(request.priority());
         task.setDueDate(request.dueDate());
+
+        task.setCompleted(request.completed() != null ? request.completed() : false);
+
 
         // 4. L'ENREGISTREMENT
         return taskRepository.save(task);
@@ -106,6 +110,14 @@ public class TaskServiceImpl implements TaskService {
     //*******************************
     public Page<AbstractTask> findAll(Pageable pageable) {
         return taskRepository.findAll(pageable);
+    }
+    public Page<AbstractTask> findIncompleteTasks(Pageable pageable){
+        // 1. On recupere TOUTES les taches paginees depuis la DB
+        Page<AbstractTask> page= taskRepository.findAll(pageable);
+        // 2. On filtre le contenu de cette page avec les Streams
+        List<AbstractTask> filterd=page.getContent().stream().filter(task -> !task.isCompleted()).toList();
+        // 3. On reconstruit la Page
+        return new PageImpl<>(filterd,pageable,page.getTotalElements());
     }
 
 }

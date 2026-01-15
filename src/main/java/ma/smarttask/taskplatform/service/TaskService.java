@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface TaskService {
     AbstractTask findById(Long id);
-    List<AbstractTask> findAll();
+//    List<AbstractTask> findAll();
     AbstractTask save(TaskRequest request);
 
     List<AbstractTask> findIncompleteTasks();
@@ -21,5 +21,7 @@ public interface TaskService {
     Optional<StudyTask> findRandomStudyTask();
 
     Page<AbstractTask> findAll(Pageable pageable);
+
+    Page<AbstractTask> findIncompleteTasks(Pageable pageable);
 
 }

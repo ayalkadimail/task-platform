@@ -21,6 +21,7 @@ public record TaskRequest(
 
         @FutureOrPresent(message = "La date ne peut pas etre dans le passe")
         LocalDate dueDate,
+        Boolean completed,
 
         String type, // "GENERAL" ou "STUDY"
 

@@ -65,7 +65,7 @@ GET http://localhost:8080/api/tasks
 
 
 ###
-GET http://localhost:8080/api/tasks/incomplete
+GET http://localhost:8080/api/tasks/incomplete?page=2&size=3
 
 ###
 GET http://localhost:8080/api/tasks/urgent

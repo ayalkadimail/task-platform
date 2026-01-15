@@ -26,10 +26,10 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
-/*   @Override
+   @Override
     public List<AbstractTask> findAll() {
-        return taskRepository.findAll();
-    }*/
+       return taskRepository.findAll();
+   }
 
     @Override
     public AbstractTask save(TaskRequest request) {

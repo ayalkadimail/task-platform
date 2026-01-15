@@ -7,6 +7,10 @@ import ma.smarttask.taskplatform.model.AbstractTask;
 import ma.smarttask.taskplatform.model.StudyTask;
 import ma.smarttask.taskplatform.model.enums.Topic;
 import ma.smarttask.taskplatform.service.TaskService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,10 +23,11 @@ import java.util.Optional;
 public class TaskController {
     private final TaskService taskService; //Injection par constructeur (via Lombok)
 
-    @GetMapping
+/*    @GetMapping
     public List<AbstractTask> getAll() {
         return taskService.findAll();
     }
+*/
     /* Le client envoie une requête GET=> Le contrôleur appelle le service=> Le service récupère les données
     =>Spring sérialise la liste en JSON*/
 
@@ -57,4 +62,21 @@ public class TaskController {
     public Optional<StudyTask> getRandom() {
         return taskService.findRandomStudyTask();
     }
+
+    @GetMapping
+    public Page<AbstractTask> getAll(
+            @RequestParam(defaultValue = "0") int page,      // Numero de page
+            @RequestParam(defaultValue = "5") int size,      // Taille de la page
+            @RequestParam(defaultValue = "createdAt,desc") String[] sort // Tri par defaut
+    ) {
+        // Separation du champ de tri et de la direction (asc/desc)
+        Sort.Direction direction = sort[1].equalsIgnoreCase("desc")
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort[0]));
+
+        return taskService.findAll(pageable);
+    }
+
 }

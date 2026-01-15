@@ -9,6 +9,9 @@ import ma.smarttask.taskplatform.model.GeneralTask;
 import ma.smarttask.taskplatform.model.StudyTask;
 
 import ma.smarttask.taskplatform.model.enums.Topic;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ma.smarttask.taskplatform.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
@@ -99,4 +102,10 @@ public class TaskServiceImpl implements TaskService {
         int randomIndex = new Random().nextInt(studyTasks.size());
         return Optional.of(studyTasks.get(randomIndex));
     }
+
+    //*******************************
+    public Page<AbstractTask> findAll(Pageable pageable) {
+        return taskRepository.findAll(pageable);
+    }
+
 }

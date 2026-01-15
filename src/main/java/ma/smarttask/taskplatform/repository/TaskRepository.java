@@ -17,6 +17,7 @@ public interface TaskRepository extends JpaRepository<AbstractTask, Long> {
     // 1. Genere : SELECT * FROM tasks WHERE completed = false
     Page<AbstractTask> findByCompletedFalse(Pageable pageable);
 
+
     // 2. Genere : SELECT * FROM tasks WHERE due_date < ?
     Page<AbstractTask> findByDueDateBefore(LocalDate date, Pageable pageable);
 

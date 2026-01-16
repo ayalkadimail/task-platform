@@ -24,4 +24,11 @@ public interface TaskRepository extends JpaRepository<AbstractTask, Long> {
     // 3. Ici on utilise @Query pour etre sur de cibler uniquement les StudyTask
     @Query("SELECT s FROM StudyTask s WHERE s.topic = :topic")
     Page<StudyTask> findStudyTasksByTopic(Topic topic, Pageable pageable);
+
+
+    // Filtre par owner
+    Page<AbstractTask> findByOwnerId(Long userId, Pageable pageable);
+
+    // On doit adapter tous nos filtres intelligents !
+    Page<AbstractTask> findByOwnerIdAndCompletedFalse(Long userId, Pageable pageable);
 }

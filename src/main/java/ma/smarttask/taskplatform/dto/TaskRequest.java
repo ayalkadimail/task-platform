@@ -28,5 +28,8 @@ public record TaskRequest(
         // Champs optionnels selon le type
         Category category,
         Topic topic,
-        Difficulty difficulty
+        Difficulty difficulty,
+
+        Long userId // On passe l'ID de celui qui crée la tache
+
 ) {}

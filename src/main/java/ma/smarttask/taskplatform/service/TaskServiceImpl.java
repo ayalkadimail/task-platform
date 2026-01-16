@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import ma.smarttask.taskplatform.dto.TaskRequest;
 import ma.smarttask.taskplatform.exception.ResourceNotFoundException;
 import ma.smarttask.taskplatform.model.AbstractTask;
+import ma.smarttask.taskplatform.model.AppUser;
 import ma.smarttask.taskplatform.model.GeneralTask;
 import ma.smarttask.taskplatform.model.StudyTask;
 
@@ -26,14 +27,20 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
-   @Override
+    private final UserService userService; // Injecte le service user
+
+    @Override
     public List<AbstractTask> findAll() {
        return taskRepository.findAll();
    }
 
     @Override
     public AbstractTask save(TaskRequest request) {
-        AbstractTask task; // 1. On prepare une variable vide de type "Tache"
+        //On cherche le proprio
+        AppUser owner = userService.findById(request.userId());
+
+        // 1. On prepare une variable vide de type "Tache"
+        AbstractTask task;
 
         // 2. LE CHOIX DU TYPE (Logique spécifique)
         if ("STUDY".equalsIgnoreCase(request.type())) {
@@ -57,7 +64,8 @@ public class TaskServiceImpl implements TaskService {
 
         task.setCompleted(request.completed() != null ? request.completed() : false);
 
-
+        //  On lie l'owner
+        task.setOwner(owner);
         // 4. L'ENREGISTREMENT
         return taskRepository.save(task);
     }

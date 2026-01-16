@@ -36,6 +36,20 @@ Content-Type: application/json
   "priority": "HIGH"
 }
 
+###tache avec user
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "type": "STUDY",
+  "title": "Test avec User",
+  "description": "Verification du lien ManyToOne",
+  "priority": "MEDIUM",
+  "dueDate": "2026-01-20",
+  "topic": "JAVA",
+  "difficulty": "EASY",
+  "userId": 1
+}
 ###study-java-high
 POST http://localhost:8080/api/tasks
 Content-Type: application/json
@@ -107,3 +121,14 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:8080/api/tasks/3
+
+
+###
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+
+{
+  "fullName": "Aya Al Kadiri",
+  "email": "al.kadiriaya.502@gmail.com"
+}

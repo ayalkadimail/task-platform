@@ -1,5 +1,6 @@
 package ma.smarttask.taskplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -39,5 +40,10 @@ public abstract class AbstractTask {
     private LocalDateTime createdAt;
 
     private LocalDate dueDate; // Nouveau : l'échéance réelle
+
+    @ManyToOne(optional = false) // Une tache DOIT avoir un owner
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private AppUser owner;
 
 }
